@@ -1,0 +1,23 @@
+{
+  "name": "@0sfs/f-35b",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The Lockheed Martin F-35B for 0SFS: JSBSim flight model and systems, airframe models, powered-lift installation and validation.",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "exports": {
+    "./validation/gearGeometry": {
+      "types": "./scripts/validation/f35b/gearGeometry.d.mts",
+      "default": "./scripts/validation/f35b/gearGeometry.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "@babylonjs/core": "8.56.2"
+  },
+  "peerDependenciesMeta": {
+    "@babylonjs/core": {
+      "optional": true
+    }
+  }
+}
