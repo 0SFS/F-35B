@@ -744,6 +744,22 @@ for failing/passing comparisons, 17 native yaw/mode cases and the retained
 12 conventional/hover regressions. These are prototype stability checks, not
 real-aircraft control-law calibration or transition-envelope qualification.
 
+On 2026-10-12 the horizontal tails and rudders left the inherited normalized
+kinematic, which covered −1 to +1 in 0.35 s. With the authored travels that is
+about 259°/s at the tail (±0.79 rad) and 172°/s at the rudder (±0.524 rad); the
+rudder also had a 0.1 s lag. The exterior copies `fcs/elevator-pos-rad` and
+`fcs/rudder-pos-rad`, so that rate was the motion on screen. The control law
+still emits a normalized command. A scale turns it into a radian command, and a
+JSBSim actuator writes the radian position that the aerodynamics and the mesh
+both read. `fcs/elevator-pos-norm` and `fcs/rudder-pos-norm` are derived from
+that position. The rate is `fcs/primary-surface-rate-limit-rad_sec`, 60°/s,
+an explicit unloaded assumption: no servo lag and no hinge-moment relief.
+Moment per radian is unchanged. A zero-time trim evaluation still jumps the
+actuator to its command; a normal step slews. The same rate on the flaperons
+made the roll-rate law hunt and the bank grow, so that channel keeps the
+inherited kinematic. The yaw regression was re-run against the slower rudder
+and still passed.
+
 The [runtime FDM notice](../../public/jsbsim-data/aircraft/F-35B-jsbsim/NOTICE.md)
 and [source manifest](../../public/jsbsim-data/aircraft/F-35B-jsbsim/source-manifest.json)
 record the dated modifications and source/current hashes. JSBSim FCS XML owns
