@@ -1,6 +1,6 @@
 # F-35B weapon-bay door geometry for AF267
 
-Date: 2026-10-23. Status: geometry specification only; no implementation or asset changes.
+Date: 2026-10-23, serrated ends added 2026-10-24. Status: geometry specification only; no implementation or asset changes.
 
 Replace the two procedural boxes with **four shaped leaves: one inboard and
 one outboard per bay**. Extract their exterior shape from the AF267 lower
@@ -30,7 +30,8 @@ door angle was found.
 | --- | --- |
 | Two internal bays | [NAVAIR, 18 April 2012](https://www.navair.navy.mil/node/18946) identifies left and right bays. |
 | Inboard and outboard door categories | [MOD Form 706D, April 2025, p. 1](https://assets.publishing.service.gov.uk/media/680b6a73faff81833fcae8c6/706D_PWIV__F-35_.pdf) records their cycles separately. |
-| One long inboard and one long outboard leaf per bay; shaped cross-sections and clipped ends | Visual reading of [Lockheed Martin's BF-3 underside photograph, taken 1 March 2012](https://www.flickr.com/photos/lockheedmartin/6965210969), supported by [MBDA's F-35B SPEAR photograph](https://www.mbda-systems.com/mbda-spear-first-flight-f-35b). These are topology references, not dimensioned drawings. |
+| One long inboard and one long outboard leaf per bay; shaped cross-sections | Visual reading of [Lockheed Martin's BF-3 underside photograph, taken 1 March 2012](https://www.flickr.com/photos/lockheedmartin/6965210969), supported by [MBDA's F-35B SPEAR photograph](https://www.mbda-systems.com/mbda-spear-first-flight-f-35b). These are topology references, not dimensioned drawings. |
+| Serrated forward and aft ends | Traced by eye from three Wikimedia Commons photographs of JASDF F-35B 69-8205 with its bays open. The [serration method record](f35b-weapon-bay-door-serrations.md) gives the photographs, the trace and its limits. No photograph shows the outboard aft end, so it repeats the inboard aft pattern. A visual fit, not a manufacturer dimension. |
 | Inboard launch opening 97°; fountain-fence position about 45° | [Code One, Eric Hehs, 15 May 2008, “Weapon Bay Doors”](https://www.codeonemagazine.com/article.html?item_id=28). The latter belongs to the deferred powered-lift model. |
 | Outboard 97°; simultaneous leaf motion; hinge lines; panel dimensions, shape, skin adaptation and thickness | Fits/conventions selected here. No published outboard travel or surveyed hinge coordinates were found. |
 | Bay/station sides | Preserve the labeled assumption: bay 0 = pilot's right, stations 4/5; bay 1 = pilot's left, stations 7/8. Stations 1–5 are assigned positive JSBSim structural Y. The briefs do not establish the numbered side. |
@@ -123,24 +124,32 @@ not claimed flat manufacturing blanks:
 
 The free-edge split has a **12 mm** gap centered on `|X|=0.900`.
 The following outlines list `(abs(X), Z)` around each exterior face. Mirror
-X for the right bay and reverse winding as needed. These are deliberately
-simple clipped-end fits; do not add invented production serration dimensions.
+X for the right bay and reverse winding as needed. The forward and aft ends
+are serrated. The teeth are a visual fit traced from photographs, and the
+[serration method record](f35b-weapon-bay-door-serrations.md) explains how.
+The outboard aft end is assumed from the inboard aft end. The foremost and
+aftmost tips stay on the bay's end lines, Z=2.500 and Z=-1.600. Every line
+X=constant crosses each outline once.
 
 ```text
 inboard:
-  (0.350,-1.600), (0.794,-1.600), (0.894,-1.500),
-  (0.894, 2.400), (0.794, 2.500), (0.350, 2.500)
+  (0.350,-1.520), (0.453,-1.580), (0.530,-1.530), (0.633,-1.600),
+  (0.714,-1.535), (0.802,-1.590), (0.894,-1.520),
+  (0.894, 2.320), (0.840, 2.455), (0.742, 2.415), (0.617, 2.500),
+  (0.464, 2.415), (0.350, 2.210)
 
 outboard:
-  (0.906,-1.500), (1.006,-1.600), (1.420,-1.600),
-  (1.420, 2.500), (1.006, 2.500), (0.906, 2.400)
+  (0.906,-1.524), (0.993,-1.591), (1.076,-1.539), (1.153,-1.600),
+  (1.250,-1.534), (1.322,-1.581), (1.420,-1.524),
+  (1.420, 2.200), (1.261, 2.500), (1.163, 2.435), (1.081, 2.495),
+  (0.906, 2.360)
 ```
 
 Define `S(x,z)` as the **lowest exterior `fuselage` intersection** on a
 vertical body-Y line. Inside this footprint it is the lower `livery` skin.
 Use actual triangle barycentric interpolation, not a fuselage bounding box,
 nearest vertex or upper ray hit. Preserve the source triangles/UVs and clip
-them at the footprint boundaries; do not reduce each leaf to its six corners.
+them at the footprint boundaries; do not reduce each leaf to its outline corners.
 Retain source creases and subdivide at the hinge-band boundary.
 
 The hinge must be straight although the original belly edge is curved.
@@ -164,12 +173,20 @@ Connect both faces with edge caps and give the hinge a small local relief
 pocket of 25 mm radius for the 18 mm shell. Do not center thickness equally
 around the exterior, which would move the visible closed belly downward.
 
+Bevel the shell along the serrated ends instead of squaring it. The inner
+face is the outline inset **18 mm** in plan along every end edge, and a
+bevel rises at 45° from each exterior end edge to it. The hinged and free
+edges, along X=constant, keep square caps. A square end would sweep through
+the fixed skin left between the teeth: the outboard leaves' 18 mm ends and
+inner faces crossed those lips from about 3° to 34°, up to about 40 mm deep.
+With the bevel, 1° sampled checks find no crossing at the ends.
+
 Closed exterior outline Y values, left side, for a reconstruction check:
 
 | Leaf | Outline vertex XYZ, in the order above |
 | --- | --- |
-| Inboard | `(0.350,0.033099,-1.600)`; `(0.794,0.129281,-1.600)`; `(0.894,0.100958,-1.500)`; `(0.894,-0.167149,2.400)`; `(0.794,-0.143696,2.500)`; `(0.350,-0.153644,2.500)` |
-| Outboard | `(0.906,0.099070,-1.500)`; `(1.006,0.100209,-1.600)`; `(1.420,0.204225,-1.600)`; `(1.420,-0.098552,2.500)`; `(1.006,-0.183078,2.500)`; `(0.906,-0.170493,2.400)` |
+| Inboard | `(0.350,0.029455,-1.520)`; `(0.453,0.012627,-1.580)`; `(0.530,0.001508,-1.530)`; `(0.633,0.024253,-1.600)`; `(0.714,0.056645,-1.535)`; `(0.802,0.130901,-1.590)`; `(0.894,0.104333,-1.520)`; `(0.894,-0.167193,2.320)`; `(0.840,-0.150325,2.455)`; `(0.742,-0.160013,2.415)`; `(0.617,-0.170735,2.500)`; `(0.464,-0.172844,2.415)`; `(0.350,-0.140435,2.210)` |
+| Outboard | `(0.906,0.103120,-1.524)`; `(0.993,0.100736,-1.591)`; `(1.076,0.078899,-1.539)`; `(1.153,0.097427,-1.600)`; `(1.250,0.104597,-1.534)`; `(1.322,0.140550,-1.581)`; `(1.420,0.198613,-1.524)`; `(1.420,-0.076398,2.200)`; `(1.261,-0.170101,2.500)`; `(1.163,-0.191771,2.435)`; `(1.081,-0.198533,2.495)`; `(0.906,-0.170903,2.360)` |
 
 These corner heights alone do not describe the belly curvature. Useful
 unmodified lower-skin samples are:
@@ -203,20 +220,21 @@ behind the open doors.
    provides continuous surrounding skin instead of a recessed panel behind
    intact fuselage. Add a **3 mm opening seam** at non-hinged perimeter edges
    by cutting the stationary skin outward; keep the panel coordinates above.
-3. The clipped free corners leave small fixed end wedges. Match their edges
-   to the neighboring closed surface. Keep the 12 mm center seam open/dark;
+3. The serrated ends leave fixed skin lips between the teeth, and a V notch
+   where both leaves' set-back free corners meet at the center seam. Match
+   their edges to the neighboring closed surface. Keep the 12 mm center seam open/dark;
    do not insert a thick vertical divider into the moving shells' sweep.
 4. Add a visually simple recessed bay lining, labeled as a stand-in. Jambs
    extend **upward into the fuselage**, not downward through the open leaf.
    Relieve the aft jamb by at least **35 mm longitudinally**, because the
-   canted hinges move some panel vertices as far aft as Z=-1.626. Keep all
+   canted hinges carry the open aft teeth as far aft as Z=-1.616. Keep all
    new lining at least 30 mm from existing inlet/gear/lift interior surfaces;
    a roof is bounded by the next upper mesh intersection minus that margin,
    rather than an invented constant cavity depth. No measured rack geometry
    or aircraft bay depth is supplied by this spec.
 
-The doors' sampled maximum Y is 0.222226 m. The identified inlet dark
-interior begins at Y=0.286549 m, leaving **64 mm Y separation from that
+The doors' sampled maximum Y is 0.215075 m. The identified inlet dark
+interior begins at Y=0.286549 m, leaving **71 mm Y separation from that
 selected `darkmet2` interior patch** for the moving shells. Check all inlet
 lip triangles and the new stitched skin, rails and lining on the final mesh;
 the selected-patch bound alone does not certify those surfaces. The shells'
@@ -259,28 +277,32 @@ through the production `aircraftAnimation.ts` rig.
 
 ## Numeric pose checks
 
-Left shells, including 18 mm thickness and clipped corners; right shells
+Left shells, including 18 mm thickness, end bevels and serrated ends; right shells
 mirror X (`[xmin,xmax]` becomes `[-xmax,-xmin]`). These bounds are checks of
 the shape recipe, not alternate box geometry.
 
 | Leaf / pose | Minimum XYZ | Maximum XYZ |
 | --- | --- | --- |
-| Inboard closed | `(0.350000,-0.241070,-1.600000)` | `(0.894000,0.150243,2.500000)` |
-| Inboard 97° | `(0.205273,-0.688468,-1.625874)` | `(0.411660,0.033099,2.500000)` |
-| Outboard closed | `(0.906000,-0.227520,-1.600000)` | `(1.420000,0.222225,2.500000)` |
-| Outboard 97° | `(1.402183,-0.592850,-1.623175)` | `(1.646978,0.204225,2.500000)` |
+| Inboard closed | `(0.350000,-0.241070,-1.600000)` | `(0.894000,0.145470,2.500000)` |
+| Inboard 97° | `(0.205273,-0.682232,-1.615423)` | `(0.408193,0.029455,2.488813)` |
+| Outboard closed | `(0.906000,-0.227520,-1.600000)` | `(1.420000,0.215075,2.500000)` |
+| Outboard 97° | `(1.402183,-0.587632,-1.613740)` | `(1.646978,0.198613,2.494273)` |
 
 At 1° sampling over 0…97°, the combined left shell envelope is approximately
-`X=0.205…1.647`, `Y=-0.693…0.223`, `Z=-1.626…2.500`.
+`X=0.205…1.647`, `Y=-0.689…0.215`, `Z=-1.616…2.500`.
 
 Triangle checks used 21 door angles (0, 4.85, …, 97°) and 21 production gear
 positions (0, .05, …, 1). With gear **locked up or locked down**, there were
 no sampled shell/gear triangle crossings. Minimum shell-to-gear distance was
 **0.100742 m gear down**, outboard at 97° versus `leftGear`, and **0.239519 m
 gear up**, outboard closed versus `leftDoor`. Right-side geometry is mirrored.
+The gear checks were run on the earlier clipped-end shells and not repeated
+for the serrated ends. The serrated outlines lie inside the clipped ones
+except at the free corners, where they reach up to 24 mm past them, aft of
+Z=-1.500, and 1 mm past near Z=2.455. The minima above are mid-leaf.
 These checks cover the moving shells, not a final implemented lining or a
 mathematical continuous-sweep proof. Verify the fitted rails, seams, end
-wedges and lining against the final generated mesh before accepting an
+lips and lining against the final generated mesh before accepting an
 implementation; preserve the stated shell coordinates and clearances.
 
 ## Existing fit conflicts and required integration limits

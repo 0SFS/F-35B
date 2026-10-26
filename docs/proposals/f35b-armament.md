@@ -207,10 +207,13 @@ doors, and the nozzle, and left-right symmetry. Those inches are mesh-fit
 assumptions. They are not a station drawing. Until a station has a location,
 the panel can show it and cannot hang a mesh on it.
 
-Weapons do not enter the fuel feed, do not take a tank priority, and do not
-respawn in flight. Rearm is a ground action: weight on wheels, master arm
-safe, and an explicit control. The fuel panel's in-flight "Respawn empty"
-stays a fuel-tank behavior.
+Weapons do not enter the fuel feed and do not take a tank priority. Rearm
+is an explicit control and needs the master arm safe. In single-player it
+works in the air. One pilot setting, "Rearm on the ground only", off by
+default, makes weapon load changes and the fuel panel's quantity edits and
+"Respawn empty" wait for weight on wheels. A server or multiplayer session
+can hold that setting on through fly's `setRearmRule`; there is no session
+protocol for it yet. Jettison and the bay doors never wait.
 
 ### Doors
 
@@ -356,8 +359,11 @@ The drawing budget for fallen stores matches the tanks: a renderer lifetime
 and a maximum count, one reusable mesh per station for a jettisoned store,
 and the burst cap for rounds. Jettison, as distinct from release, is the tank
 behavior: the store leaves with the aircraft's ground velocity, ballistic,
-and the station goes empty. Jettison works with the master arm safe, so a
-pilot can shed weight without firing. It is on the armament tab, per station.
+and the station goes empty. Jettison works with the master arm safe or set,
+in the air or on the wheels, so a pilot can shed weight without firing. It is
+on the armament tab, per station. A store in a shut bay is not drawn, so it
+leaves without a falling drawing. The release step is shared with the tanks
+through `@0sfs/stores/releasedStore`.
 
 ## Where the code goes
 
@@ -435,7 +441,9 @@ Acceptance:
   would allow its pieces.
 - Jettison of one station zeros that pointmass and that drag term and leaves
   the other stations alone.
-- Rearm is refused in the air and accepted on the wheels with the arm safe.
+- Rearm is refused with the master arm set. With "Rearm on the ground only"
+  off, the default, it is accepted in the air; with it on, it is refused in
+  the air and accepted on the wheels with the arm safe.
 - Save, restore, recovery, and a runway change keep the hung load. A pre-armament
   save stays clean.
 - The empirical model still flies, and its run shows no station properties and
