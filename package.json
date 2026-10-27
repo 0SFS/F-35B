@@ -10,7 +10,8 @@
       "types": "./scripts/validation/f35b/gearGeometry.d.mts",
       "default": "./scripts/validation/f35b/gearGeometry.mjs"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./manifest": "./public/0sfs-mod.json"
   },
   "peerDependencies": {
     "@babylonjs/core": "8.56.2"
@@ -19,5 +20,8 @@
     "@babylonjs/core": {
       "optional": true
     }
+  },
+  "scripts": {
+    "validate": "node scripts/validate-mod.mjs"
   }
 }
