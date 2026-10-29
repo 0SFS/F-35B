@@ -21,8 +21,8 @@ combinations.
 
 ## Evidence and limits
 
-Use the existing [weapons and stores report](../../../reports/F35B%20weapons%20and%20stores.md)
-and [research notes](../../../research_notes/F35B%20weapons%20and%20stores/).
+Use the existing [weapons and stores report](../reports/F35B%20weapons%20and%20stores.md)
+and [research notes](../research-notes/F35B%20weapons%20and%20stores/).
 The report's later Code One finding supersedes the older notes saying no
 door angle was found.
 

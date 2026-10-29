@@ -461,7 +461,10 @@
               "sourceUrl": "https://sketchfab.com/3d-models/lockheed-martin-f-35b-lightning-ii-5d54a6af45974ad386ae74d42b33374a"
             }
           }
-        ]
+        ],
+        "camera": {
+          "follow": "aircraft"
+        }
       }
     ],
     "fdmProfiles": {

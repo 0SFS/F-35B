@@ -1,7 +1,7 @@
 # F-35B armament
 
 Date: 2026-10-22. Status: Phase 1, hung stores, is implemented. Phase 2, leaving the rail, is not.
-The factual record is [F-35B weapons and stores](../../../reports/F35B%20weapons%20and%20stores.md).
+The factual record is [F-35B weapons and stores](../reports/F35B%20weapons%20and%20stores.md).
 This document decides what the flying F-35B will carry and fire, and which
 published disagreements stay visible in the data.
 
