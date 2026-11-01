@@ -1403,8 +1403,26 @@
                 </test>
             </switch>
 
+            <!-- 0SFS weight-on-wheels interlock, 2026-11-01. While the gear is
+                 down and locked and either main wheel carries weight, an up
+                 command holds it down; the gear follows the command once the
+                 mains unload. Without it, raising the gear on the ground
+                 dropped the jet about 1.2 m onto its belly, and lowering it
+                 again pushed the wheels into the ground. This is a simulator
+                 rule, not the production gear-handle lock. -->
+            <switch name="gear-cmd-interlocked">
+                <default value="gear/gear-cmd-norm"/>
+                <test logic="AND" value="1">
+                    gear/gear-pos-norm gt 0.99
+                    <test logic="OR">
+                        gear/unit[1]/WOW eq 1
+                        gear/unit[2]/WOW eq 1
+                    </test>
+                </test>
+            </switch>
+
             <kinematic name="Gear Control">
-                <input>gear/gear-cmd-norm</input>
+                <input>fcs/gear-cmd-interlocked</input>
                 <traverse>
                     <setting>
                         <position>0</position>
