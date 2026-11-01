@@ -116,10 +116,16 @@
 
  <ground_reactions>
 
+ <!-- Bogey x/y follow the AF267 exterior's extended axle/tread centres,
+      measured after the conversion-root scale and model yaw. The wheel mesh
+      includes asymmetric hub geometry, so its full bounding-box centre is not
+      the tread centre. This is an asset alignment, not a manufacturer station
+      drawing. Uncompressed z, spring/damper tuning and brake groups are retained. -->
+
   <contact type="BOGEY" name="NOSE">
    <location unit="IN">
-     <x>  79.85 </x>
-     <y>   0.00 </y>
+     <x> 153.318556 </x>
+     <y> 0.000000 </y>
      <z> -73.70 </z>
    </location>
    <static_friction>  0.80 </static_friction>
@@ -134,8 +140,8 @@
 
   <contact type="BOGEY" name="LEFT_MAIN">
    <location unit="IN">
-     <x> 383.26 </x>
-     <y> -77.92 </y>
+     <x> 398.975410 </x>
+     <y> -84.617638 </y>
      <z> -73.70 </z>
    </location>
    <static_friction>  0.80 </static_friction>
@@ -150,8 +156,8 @@
 
   <contact type="BOGEY" name="RIGHT_MAIN">
    <location unit="IN">
-     <x> 383.26 </x>
-     <y>  77.92 </y>
+     <x> 398.975410 </x>
+     <y> 84.617638 </y>
      <z> -73.70 </z>
    </location>
    <static_friction>  0.80 </static_friction>
